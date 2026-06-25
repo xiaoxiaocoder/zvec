@@ -12,6 +12,14 @@ if(MSVC)
 endif()
 add_subdirectory(antlr4/runtime/Cpp/)
 
+if(TARGET antlr4_shared)
+    set_target_properties(antlr4_shared PROPERTIES
+        ARCHIVE_OUTPUT_NAME antlr4-runtime_shared
+        LIBRARY_OUTPUT_NAME antlr4-runtime_shared
+        RUNTIME_OUTPUT_NAME antlr4-runtime_shared
+    )
+endif()
+
 target_include_directories(antlr4_static SYSTEM INTERFACE
         "${CMAKE_CURRENT_SOURCE_DIR}/antlr4/runtime/Cpp/runtime/src/"
 )
