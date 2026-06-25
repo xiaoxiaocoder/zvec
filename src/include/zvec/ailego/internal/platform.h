@@ -298,7 +298,7 @@ static inline int ailego_clz64(uint64_t x) {
 #endif
 
 #ifndef ailego_offsetof
-#define ailego_offsetof(TYPE, MEMBER) ((size_t) & ((TYPE *)0)->MEMBER)
+#define ailego_offsetof(TYPE, MEMBER) ((size_t)&((TYPE *)0)->MEMBER)
 #endif
 
 #ifndef ailego_align

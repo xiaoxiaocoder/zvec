@@ -111,8 +111,8 @@ static inline thread_id_t thread_id() {
 #elif defined(_WIN32) || defined(__WINDOWS__) || defined(__WIN32__)
 // No sense pulling in windows.h in a header, we'll manually declare the
 // function we use and rely on backwards-compatibility for this not to break
-extern "C"
-    __declspec(dllimport) unsigned long __stdcall GetCurrentThreadId(void);
+extern "C" __declspec(dllimport) unsigned long __stdcall GetCurrentThreadId(
+    void);
 namespace moodycamel {
 namespace details {
 static_assert(sizeof(unsigned long) == sizeof(std::uint32_t),
@@ -2833,9 +2833,10 @@ class ConcurrentQueue {
 
       // Create the new block
       pr_blockIndexSize <<= 1;
-      auto newRawPtr = static_cast<char *>((Traits::malloc)(
-          sizeof(BlockIndexHeader) + std::alignment_of<BlockIndexEntry>::value -
-          1 + sizeof(BlockIndexEntry) * pr_blockIndexSize));
+      auto newRawPtr = static_cast<char *>(
+          (Traits::malloc)(sizeof(BlockIndexHeader) +
+                           std::alignment_of<BlockIndexEntry>::value - 1 +
+                           sizeof(BlockIndexEntry) * pr_blockIndexSize));
       if (newRawPtr == nullptr) {
         pr_blockIndexSize >>= 1;  // Reset to allow graceful retry
         return false;
@@ -3555,11 +3556,12 @@ class ConcurrentQueue {
       auto prev = blockIndex.load(std::memory_order_relaxed);
       size_t prevCapacity = prev == nullptr ? 0 : prev->capacity;
       auto entryCount = prev == nullptr ? nextBlockIndexCapacity : prevCapacity;
-      auto raw = static_cast<char *>((Traits::malloc)(
-          sizeof(BlockIndexHeader) + std::alignment_of<BlockIndexEntry>::value -
-          1 + sizeof(BlockIndexEntry) * entryCount +
-          std::alignment_of<BlockIndexEntry *>::value - 1 +
-          sizeof(BlockIndexEntry *) * nextBlockIndexCapacity));
+      auto raw = static_cast<char *>(
+          (Traits::malloc)(sizeof(BlockIndexHeader) +
+                           std::alignment_of<BlockIndexEntry>::value - 1 +
+                           sizeof(BlockIndexEntry) * entryCount +
+                           std::alignment_of<BlockIndexEntry *>::value - 1 +
+                           sizeof(BlockIndexEntry *) * nextBlockIndexCapacity));
       if (raw == nullptr) {
         return false;
       }

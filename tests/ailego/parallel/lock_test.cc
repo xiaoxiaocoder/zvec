@@ -22,8 +22,12 @@ using namespace zvec;
 
 TEST(SpinMutex, General) {
   ailego::SpinMutex mutex;
-  { std::unique_lock<ailego::SpinMutex> signal_lock1(mutex); }
-  { std::lock_guard<ailego::SpinMutex> signal_lock2(mutex); }
+  {
+    std::unique_lock<ailego::SpinMutex> signal_lock1(mutex);
+  }
+  {
+    std::lock_guard<ailego::SpinMutex> signal_lock2(mutex);
+  }
 
   ailego::SpinMutex mutex2;
   int result = std::try_lock(mutex, mutex2);
@@ -36,15 +40,23 @@ TEST(SpinMutex, General) {
 TEST(WriteLock, General) {
   ailego::SharedMutex mutex;
   ailego::WriteLock wrlock(mutex);
-  { std::unique_lock<ailego::WriteLock> signal_lock1(wrlock); }
-  { std::lock_guard<ailego::WriteLock> signal_lock2(wrlock); }
+  {
+    std::unique_lock<ailego::WriteLock> signal_lock1(wrlock);
+  }
+  {
+    std::lock_guard<ailego::WriteLock> signal_lock2(wrlock);
+  }
 }
 
 TEST(ReadLock, General) {
   ailego::SharedMutex mutex;
   ailego::ReadLock rdlock(mutex);
-  { std::unique_lock<ailego::ReadLock> signal_lock1(rdlock); }
-  { std::lock_guard<ailego::ReadLock> signal_lock2(rdlock); }
+  {
+    std::unique_lock<ailego::ReadLock> signal_lock1(rdlock);
+  }
+  {
+    std::lock_guard<ailego::ReadLock> signal_lock2(rdlock);
+  }
 }
 
 TEST(Mutex, General) {

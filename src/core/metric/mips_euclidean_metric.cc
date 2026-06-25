@@ -615,9 +615,9 @@ class MipsSquaredEuclideanMetric : public IndexMetric {
 
   //! Returns m x n distance matrix compute function.
   //  Handle is used to resolve potential DistanceMatrix<T>::Compute overload.
-  template <template <typename, size_t, size_t, typename = void>
-            class DistanceMatrix,
-            typename T, template <typename> class Handle = TypedDistanceHandle>
+  template <
+      template <typename, size_t, size_t, typename = void> class DistanceMatrix,
+      typename T, template <typename> class Handle = TypedDistanceHandle>
   static Handle<void> DistanceMatrixCompute(size_t m, size_t n) {
     static Handle<T> distance_table[6][6] = {
         {DistanceMatrix<T, 1, 1, void>::Compute, nullptr, nullptr, nullptr,

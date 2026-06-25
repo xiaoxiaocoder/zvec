@@ -824,7 +824,8 @@ TEST_F(DocDetailedTest, ValidateAndSanitization) {
     auto schema = test::TestHelper::CreateNormalSchema(false);
     std::vector<std::string> invalid_names = {
         // Too long (>64)
-        std::string(65, 'a'), std::string(64, 'a') + "_",
+        std::string(65, 'a'),
+        std::string(64, 'a') + "_",
 
         // Illegal characters
         "a b",   // space

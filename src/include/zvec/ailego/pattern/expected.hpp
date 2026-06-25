@@ -1437,29 +1437,25 @@ class TL_EXPECTED_NODISCARD expected
 
 #else
   template <class F>
-  TL_EXPECTED_11_CONSTEXPR auto and_then(
-      F &&f) & -> decltype(and_then_impl(std::declval<expected &>(),
-                                         std::forward<F>(f))) {
+  TL_EXPECTED_11_CONSTEXPR auto and_then(F &&f) & -> decltype(and_then_impl(
+      std::declval<expected &>(), std::forward<F>(f))) {
     return and_then_impl(*this, std::forward<F>(f));
   }
   template <class F>
-  TL_EXPECTED_11_CONSTEXPR auto and_then(
-      F &&f) && -> decltype(and_then_impl(std::declval<expected &&>(),
-                                          std::forward<F>(f))) {
+  TL_EXPECTED_11_CONSTEXPR auto and_then(F &&f) && -> decltype(and_then_impl(
+      std::declval<expected &&>(), std::forward<F>(f))) {
     return and_then_impl(std::move(*this), std::forward<F>(f));
   }
   template <class F>
-  constexpr auto and_then(
-      F &&f) const & -> decltype(and_then_impl(std::declval<expected const &>(),
-                                               std::forward<F>(f))) {
+  constexpr auto and_then(F &&f) const & -> decltype(and_then_impl(
+      std::declval<expected const &>(), std::forward<F>(f))) {
     return and_then_impl(*this, std::forward<F>(f));
   }
 
 #ifndef TL_EXPECTED_NO_CONSTRR
   template <class F>
-  constexpr auto and_then(F &&f)
-      const && -> decltype(and_then_impl(std::declval<expected const &&>(),
-                                         std::forward<F>(f))) {
+  constexpr auto and_then(F &&f) const && -> decltype(and_then_impl(
+      std::declval<expected const &&>(), std::forward<F>(f))) {
     return and_then_impl(std::move(*this), std::forward<F>(f));
   }
 #endif
@@ -1486,8 +1482,7 @@ class TL_EXPECTED_NODISCARD expected
 #else
   template <class F>
   TL_EXPECTED_11_CONSTEXPR decltype(expected_map_impl(
-      std::declval<expected &>(), std::declval<F &&>()))
-  map(F &&f) & {
+      std::declval<expected &>(), std::declval<F &&>())) map(F &&f) & {
     return expected_map_impl(*this, std::forward<F>(f));
   }
   template <class F>
@@ -1506,8 +1501,8 @@ class TL_EXPECTED_NODISCARD expected
 #ifndef TL_EXPECTED_NO_CONSTRR
   template <class F>
   constexpr decltype(expected_map_impl(std::declval<const expected &&>(),
-                                       std::declval<F &&>()))
-  map(F &&f) const && {
+                                       std::declval<F &&>())) map(F &&f)
+      const && {
     return expected_map_impl(std::move(*this), std::forward<F>(f));
   }
 #endif
@@ -1534,8 +1529,7 @@ class TL_EXPECTED_NODISCARD expected
 #else
   template <class F>
   TL_EXPECTED_11_CONSTEXPR decltype(expected_map_impl(
-      std::declval<expected &>(), std::declval<F &&>()))
-  transform(F &&f) & {
+      std::declval<expected &>(), std::declval<F &&>())) transform(F &&f) & {
     return expected_map_impl(*this, std::forward<F>(f));
   }
   template <class F>
@@ -1554,8 +1548,8 @@ class TL_EXPECTED_NODISCARD expected
 #ifndef TL_EXPECTED_NO_CONSTRR
   template <class F>
   constexpr decltype(expected_map_impl(std::declval<const expected &&>(),
-                                       std::declval<F &&>()))
-  transform(F &&f) const && {
+                                       std::declval<F &&>())) transform(F &&f)
+      const && {
     return expected_map_impl(std::move(*this), std::forward<F>(f));
   }
 #endif
@@ -1581,9 +1575,8 @@ class TL_EXPECTED_NODISCARD expected
   }
 #else
   template <class F>
-  TL_EXPECTED_11_CONSTEXPR decltype(map_error_impl(std::declval<expected &>(),
-                                                   std::declval<F &&>()))
-  map_error(F &&f) & {
+  TL_EXPECTED_11_CONSTEXPR decltype(map_error_impl(
+      std::declval<expected &>(), std::declval<F &&>())) map_error(F &&f) & {
     return map_error_impl(*this, std::forward<F>(f));
   }
   template <class F>
@@ -1602,8 +1595,8 @@ class TL_EXPECTED_NODISCARD expected
 #ifndef TL_EXPECTED_NO_CONSTRR
   template <class F>
   constexpr decltype(map_error_impl(std::declval<const expected &&>(),
-                                    std::declval<F &&>()))
-  map_error(F &&f) const && {
+                                    std::declval<F &&>())) map_error(F &&f)
+      const && {
     return map_error_impl(std::move(*this), std::forward<F>(f));
   }
 #endif
@@ -1628,9 +1621,9 @@ class TL_EXPECTED_NODISCARD expected
   }
 #else
   template <class F>
-  TL_EXPECTED_11_CONSTEXPR decltype(map_error_impl(std::declval<expected &>(),
-                                                   std::declval<F &&>()))
-  transform_error(F &&f) & {
+  TL_EXPECTED_11_CONSTEXPR decltype(map_error_impl(
+      std::declval<expected &>(),
+      std::declval<F &&>())) transform_error(F &&f) & {
     return map_error_impl(*this, std::forward<F>(f));
   }
   template <class F>
@@ -1648,9 +1641,9 @@ class TL_EXPECTED_NODISCARD expected
 
 #ifndef TL_EXPECTED_NO_CONSTRR
   template <class F>
-  constexpr decltype(map_error_impl(std::declval<const expected &&>(),
-                                    std::declval<F &&>()))
-  transform_error(F &&f) const && {
+  constexpr decltype(map_error_impl(
+      std::declval<const expected &&>(),
+      std::declval<F &&>())) transform_error(F &&f) const && {
     return map_error_impl(std::move(*this), std::forward<F>(f));
   }
 #endif
@@ -2312,8 +2305,8 @@ template <class Exp, class F,
                                               *std::declval<Exp>())),
           detail::enable_if_t<!std::is_void<Ret>::value> * = nullptr>
 
-constexpr auto expected_map_impl(Exp &&exp,
-                                 F &&f) -> ret_t<Exp, detail::decay_t<Ret>> {
+constexpr auto expected_map_impl(Exp &&exp, F &&f)
+    -> ret_t<Exp, detail::decay_t<Ret>> {
   using result = ret_t<Exp, detail::decay_t<Ret>>;
 
   return exp.has_value() ? result(detail::invoke(std::forward<F>(f),
@@ -2341,8 +2334,8 @@ template <class Exp, class F,
           class Ret = decltype(detail::invoke(std::declval<F>())),
           detail::enable_if_t<!std::is_void<Ret>::value> * = nullptr>
 
-constexpr auto expected_map_impl(Exp &&exp,
-                                 F &&f) -> ret_t<Exp, detail::decay_t<Ret>> {
+constexpr auto expected_map_impl(Exp &&exp, F &&f)
+    -> ret_t<Exp, detail::decay_t<Ret>> {
   using result = ret_t<Exp, detail::decay_t<Ret>>;
 
   return exp.has_value() ? result(detail::invoke(std::forward<F>(f)))

@@ -444,7 +444,7 @@ class Recall {
       char *buffer = new char[LENGTH];
       gtf.read(buffer, sizeof(int));
 
-      size_t gt_count_input = (size_t) * (int *)buffer;
+      size_t gt_count_input = (size_t)*(int *)buffer;
       size_t one_query_line_size = sizeof(int) + GT_PAIR_SIZE * gt_count_input;
 
       if (gt_count != gt_count_input || file_size % one_query_line_size != 0) {
@@ -1104,7 +1104,7 @@ class SparseRecall {
       char *buffer = new char[LENGTH];
       gtf.read(buffer, sizeof(int));
 
-      size_t gt_count_input = (size_t) * (int *)buffer;
+      size_t gt_count_input = (size_t)*(int *)buffer;
       size_t one_query_line_size = sizeof(int) + GT_PAIR_SIZE * gt_count_input;
 
       if (gt_count != gt_count_input || file_size % one_query_line_size != 0) {
