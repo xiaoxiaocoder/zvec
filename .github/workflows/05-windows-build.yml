@@ -86,19 +86,12 @@ jobs:
           cd "$env:GITHUB_WORKSPACE"
           $env:CMAKE_GENERATOR = "Ninja"
           $env:CMAKE_BUILD_PARALLEL_LEVEL = "$env:NPROC"
-          $extraArgs = @()
-          if ("${{ matrix.arch }}" -eq "x86") {
-            $env:CMAKE_GENERATOR_PLATFORM = "Win32"
-            $env:SKBUILD_CMAKE_ARGS = "-A Win32"
-            $extraArgs += "--config-settings=cmake.define.CMAKE_GENERATOR_PLATFORM=Win32"
-          }
           python -m pip install -v . `
             --no-build-isolation `
             --config-settings='cmake.define.BUILD_TOOLS=ON' `
             --config-settings='cmake.define.ENABLE_WERROR=ON' `
             --config-settings='cmake.define.CMAKE_C_COMPILER_LAUNCHER=sccache' `
-            --config-settings='cmake.define.CMAKE_CXX_COMPILER_LAUNCHER=sccache' `
-            @extraArgs
+            --config-settings='cmake.define.CMAKE_CXX_COMPILER_LAUNCHER=sccache'
         shell: powershell
 
       - name: Show sccache statistics after pip install
