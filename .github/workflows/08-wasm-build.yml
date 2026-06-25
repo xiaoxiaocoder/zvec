@@ -2,11 +2,11 @@ name: WebAssembly Build
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "wasm-only-ci" ]
     paths-ignore:
       - '**.md'
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "wasm-only-ci" ]
     paths-ignore:
       - '**.md'
   workflow_dispatch:
