@@ -43,6 +43,7 @@ index 2c5e7376f..ae992f9cc 100644
  
 -set(LIB_OUTPUT_DIR "${CMAKE_HOME_DIRECTORY}/dist") # put generated libraries here.
 +set(LIB_OUTPUT_DIR "${EXTERNAL_LIB_DIR}")
++set_target_properties(antlr4_shared PROPERTIES OUTPUT_NAME antlr4-runtime_shared)
  message(STATUS "Output libraries to ${LIB_OUTPUT_DIR}")
  
  # make sure 'make' works fine even if ${LIB_OUTPUT_DIR} is deleted.
