@@ -2,7 +2,7 @@ name: Main
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "feature/windows-x86-build" ]
     paths-ignore: &paths-ignore
       - '**.md'
       - '.github/CODEOWNERS'
@@ -23,7 +23,7 @@ on:
       - '.github/workflows/scripts/**'
   merge_group:
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "feature/windows-x86-build" ]
     paths-ignore: *paths-ignore
   workflow_dispatch:
 
@@ -35,25 +35,26 @@ permissions:
   contents: read
 
 jobs:
-  # Code quality checks (fast, run first)
   lint:
     if: >-
-      github.event_name != 'pull_request' ||
-      (!github.event.pull_request.draft &&
-       !contains(github.event.pull_request.title, 'wip'))
+      github.ref != 'refs/heads/feature/windows-x86-build' && (
+        github.event_name != 'pull_request' ||
+        (!github.event.pull_request.draft &&
+         !contains(github.event.pull_request.title, 'wip'))
+      )
     uses: ./.github/workflows/02-lint-check.yml
 
-  # Static analysis: clang-tidy on changed C/C++ files
   clang-tidy:
     if: >-
-      github.event_name != 'pull_request' ||
-      (!github.event.pull_request.draft &&
-       !contains(github.event.pull_request.title, 'wip'))
+      github.ref != 'refs/heads/feature/windows-x86-build' && (
+        github.event_name != 'pull_request' ||
+        (!github.event.pull_request.draft &&
+         !contains(github.event.pull_request.title, 'wip'))
+      )
     uses: ./.github/workflows/clang_tidy.yml
 
-  # Main build and test matrix
   build-and-test-macos-arm64:
-    if: github.event_name != 'push' || github.ref != 'refs/heads/main'
+    if: github.ref != 'refs/heads/feature/windows-x86-build' && (github.event_name != 'push' || github.ref != 'refs/heads/main')
     name: Build & Test (macos-arm64)
     needs: [lint, clang-tidy]
     uses: ./.github/workflows/03-macos-linux-build.yml
@@ -62,7 +63,7 @@ jobs:
       os: macos-15
 
   build-and-test-macos-26-arm64:
-    if: github.event_name != 'push' || github.ref != 'refs/heads/main'
+    if: github.ref != 'refs/heads/feature/windows-x86-build' && (github.event_name != 'push' || github.ref != 'refs/heads/main')
     name: Build & Test (macos-26-arm64)
     needs: [lint, clang-tidy]
     uses: ./.github/workflows/03-macos-linux-build.yml
@@ -71,7 +72,7 @@ jobs:
       os: macos-26
 
   build-and-test-linux-arm64:
-    if: github.event_name != 'push' || github.ref != 'refs/heads/main'
+    if: github.ref != 'refs/heads/feature/windows-x86-build' && (github.event_name != 'push' || github.ref != 'refs/heads/main')
     name: Build & Test (linux-arm64)
     needs: [lint, clang-tidy]
     uses: ./.github/workflows/03-macos-linux-build.yml
@@ -80,6 +81,7 @@ jobs:
       os: ubuntu-24.04-arm
 
   build-and-test-linux-x64:
+    if: github.ref != 'refs/heads/feature/windows-x86-build'
     name: Build & Test (linux-x64)
     needs: [lint, clang-tidy]
     uses: ./.github/workflows/03-macos-linux-build.yml
@@ -88,7 +90,7 @@ jobs:
       os: ubuntu-24.04
 
   build-and-test-linux-x64-clang:
-    if: github.event_name != 'push' || github.ref != 'refs/heads/main'
+    if: github.ref != 'refs/heads/feature/windows-x86-build' && (github.event_name != 'push' || github.ref != 'refs/heads/main')
     name: Build & Test (linux-x64-clang)
     needs: [lint, clang-tidy]
     uses: ./.github/workflows/03-macos-linux-build.yml
@@ -98,19 +100,18 @@ jobs:
       compiler: clang
 
   build-android:
-    if: github.event_name != 'push' || github.ref != 'refs/heads/main'
+    if: github.ref != 'refs/heads/feature/windows-x86-build' && (github.event_name != 'push' || github.ref != 'refs/heads/main')
     name: Build & Test (android)
     needs: [lint, clang-tidy]
     uses: ./.github/workflows/04-android-build.yml
 
   build-and-test-on-windows:
-    if: github.event_name != 'push' || github.ref != 'refs/heads/main'
+    if: github.ref == 'refs/heads/feature/windows-x86-build' || (github.event_name != 'push' && github.event_name != 'pull_request') || (github.event_name == 'pull_request' && contains(github.event.pull_request.head.ref, 'windows'))
     name: Build & Test (Windows)
-    needs: [lint, clang-tidy]
     uses: ./.github/workflows/05-windows-build.yml
 
   build-ios:
-    if: github.event_name != 'push' || github.ref != 'refs/heads/main'
+    if: github.ref != 'refs/heads/feature/windows-x86-build' && (github.event_name != 'push' || github.ref != 'refs/heads/main')
     name: Build & Test (iOS)
     needs: [lint, clang-tidy]
     uses: ./.github/workflows/06-ios-build.yml

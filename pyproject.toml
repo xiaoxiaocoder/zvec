@@ -200,11 +200,9 @@ archs = ["arm64"]
 environment = { CMAKE_GENERATOR = "Unix Makefiles", CMAKE_BUILD_PARALLEL_LEVEL = "16", MACOSX_DEPLOYMENT_TARGET = "11.0" }
 
 [tool.cibuildwheel.windows]
-archs = ["auto64"]
+archs = ["auto64", "auto32"]
 test-command = "cd /d {project} && pytest python/tests -v --tb=short --basetemp=./.pytest_tmp"
 environment = { CMAKE_GENERATOR = "Ninja" }
-#config-settings = { build-dir = "build/{wheel_tag}" }
-#&& if exist .pytest_tmp rmdir /s /q .pytest_tmp"
 before-build = [
     "python -c \"import shutil, glob, os; [shutil.rmtree(p, ignore_errors=True) for p in ['build', '.pytest_tmp']];\""
 ]
