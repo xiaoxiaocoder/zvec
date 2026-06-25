@@ -48,6 +48,8 @@ float *zvec_malloc_f32(size_t count) {
 }
 
 EMSCRIPTEN_KEEPALIVE
-void zvec_free(void *ptr) { free(ptr); }
+void zvec_free(void *ptr) {
+  free(ptr);
+}
 
 }
